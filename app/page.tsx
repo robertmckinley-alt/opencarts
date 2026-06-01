@@ -35,7 +35,7 @@ type Payload = {
   error?: string;
 };
 
-const REFRESH_MS = 15000;
+const REFRESH_MS = 30000;
 
 function money(n: number) {
   return n.toLocaleString(undefined, {
