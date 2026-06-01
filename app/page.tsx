@@ -146,7 +146,7 @@ export default function Page() {
             />
             <span className="hidden md:block h-6 w-px bg-white/15" />
             <div className="hidden md:block">
-              <div className="font-display text-lg font-bold tracking-tight">OpenCarts</div>
+              <div className="text-lg font-bold tracking-tight">OpenCarts</div>
               <div className="text-[10px] uppercase tracking-[0.22em] text-white/40">
                 Live wholesale dashboard
               </div>
@@ -228,7 +228,7 @@ export default function Page() {
                       <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">
                         {c.client_license ? `Lic ${c.client_license}` : 'Cart'}
                       </div>
-                      <div className="mt-1 font-display font-semibold text-base truncate">
+                      <div className="mt-1 font-semibold text-base truncate">
                         {c.client_name}
                       </div>
                       <div className="mt-0.5 text-xs text-white/50 truncate">
@@ -243,7 +243,7 @@ export default function Page() {
                   <div className="mt-5 flex items-end justify-between">
                     <div>
                       <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Cart value</div>
-                      <div className="text-3xl font-display font-extrabold tracking-tight bg-gradient-to-br from-white via-white to-[#a8e07a] bg-clip-text text-transparent">
+                      <div className="text-3xl font-extrabold tracking-tight bg-gradient-to-br from-white via-white to-[#a8e07a] bg-clip-text text-transparent">
                         {moneyFull(c.cart_total)}
                       </div>
                     </div>
@@ -289,7 +289,7 @@ function Kpi({
     <div className="glass rounded-2xl p-5 relative overflow-hidden">
       <div className={`absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br ${accent} opacity-25 blur-2xl`} />
       <div className="text-[11px] uppercase tracking-[0.2em] text-white/50">{label}</div>
-      <div className={`mt-2 text-3xl font-display font-extrabold tracking-tight ${primary ? 'bg-gradient-to-br from-[#72BC44] to-white bg-clip-text text-transparent' : ''}`}>
+      <div className={`mt-2 text-3xl font-extrabold tracking-tight ${primary ? 'bg-gradient-to-br from-[#72BC44] to-white bg-clip-text text-transparent' : ''}`}>
         {value}
       </div>
       {sub && <div className="mt-1 text-xs text-white/40">{sub}</div>}
@@ -328,12 +328,12 @@ function CartModal({ cart, onClose }: { cart: Cart; onClose: () => void }) {
             <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">
               {cart.client_license ? `License ${cart.client_license}` : 'Cart'}
             </div>
-            <div className="text-2xl font-display font-bold mt-1">{cart.client_name}</div>
+            <div className="text-2xl font-bold mt-1">{cart.client_name}</div>
             <div className="text-sm text-white/50 mt-1">{cart.inventory_allocation_name ?? '—'}</div>
           </div>
           <div className="ml-auto text-right">
             <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Cart value</div>
-            <div className="text-3xl font-display font-extrabold bg-gradient-to-br from-[#72BC44] via-[#a8e07a] to-white bg-clip-text text-transparent">
+            <div className="text-3xl font-extrabold bg-gradient-to-br from-[#72BC44] via-[#a8e07a] to-white bg-clip-text text-transparent">
               {moneyFull(cart.cart_total)}
             </div>
             <div className="text-xs text-white/40 mt-1">{int(cart.item_count)} units · {sortedItems.length} SKUs</div>
