@@ -54,14 +54,14 @@ function int(n: number) {
   return n.toLocaleString();
 }
 function ageColor(mins: number) {
-  if (mins < 30) return 'glow-emerald';
-  if (mins < 120) return 'glow-sky';
-  if (mins < 360) return 'glow-amber';
-  return 'glow-rose';
+  if (mins < 30) return 'glow-fresh';
+  if (mins < 120) return 'glow-active';
+  if (mins < 360) return 'glow-aging';
+  return 'glow-stale';
 }
 function ageBadge(mins: number) {
-  if (mins < 30) return { label: 'FRESH', cls: 'bg-emerald-500/15 text-emerald-300 ring-emerald-400/30' };
-  if (mins < 120) return { label: 'ACTIVE', cls: 'bg-sky-500/15 text-sky-300 ring-sky-400/30' };
+  if (mins < 30) return { label: 'FRESH', cls: 'bg-[#72BC44]/15 text-[#aee291] ring-[#72BC44]/40' };
+  if (mins < 120) return { label: 'ACTIVE', cls: 'bg-white/10 text-white/80 ring-white/20' };
   if (mins < 360) return { label: 'AGING', cls: 'bg-amber-500/15 text-amber-300 ring-amber-400/30' };
   return { label: 'STALE', cls: 'bg-rose-500/15 text-rose-300 ring-rose-400/30' };
 }
@@ -136,22 +136,25 @@ export default function Page() {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-white/5 backdrop-blur-xl bg-black/30">
+      <header className="sticky top-0 z-30 border-b border-white/5 backdrop-blur-xl bg-black/40">
         <div className="mx-auto max-w-[1500px] px-6 py-4 flex items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-emerald-400 to-sky-500 grid place-items-center text-black font-black">
-              ◎
-              <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-emerald-400">
-                <span className="absolute inset-0 rounded-full bg-emerald-400 ping-dot" />
-              </span>
-            </div>
-            <div>
-              <div className="text-lg font-bold tracking-tight">OpenCarts</div>
-              <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">
-                Live wholesale carts
+            <img
+              src="https://phatpanda.com/assets/img/logos/PP-WhiteGreen-Wide.svg"
+              alt="Phat Panda"
+              className="h-7 w-auto"
+            />
+            <span className="hidden md:block h-6 w-px bg-white/15" />
+            <div className="hidden md:block">
+              <div className="font-display text-lg font-bold tracking-tight">OpenCarts</div>
+              <div className="text-[10px] uppercase tracking-[0.22em] text-white/40">
+                Live wholesale dashboard
               </div>
             </div>
+            <span className="ml-2 relative inline-flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[#72BC44] opacity-70 ping-dot" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#72BC44]" />
+            </span>
           </div>
 
           <div className="ml-auto flex items-center gap-2">
@@ -159,7 +162,7 @@ export default function Page() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Filter clients, licenses, allocations…"
-              className="w-72 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm placeholder:text-white/30 focus:outline-none focus:border-white/30"
+              className="w-72 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm placeholder:text-white/30 focus:outline-none focus:border-[#72BC44]/60"
             />
             <select
               value={sort}
@@ -178,8 +181,8 @@ export default function Page() {
             </button>
             <div className="flex items-center gap-2 ml-2 text-xs text-white/50">
               <span className="relative inline-flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70 ping-dot" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                <span className="absolute inline-flex h-full w-full rounded-full bg-[#72BC44] opacity-70 ping-dot" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#72BC44]" />
               </span>
               {lastFetch ? `Updated ${lastFetch.toLocaleTimeString()}` : 'Connecting…'}
             </div>
@@ -187,35 +190,13 @@ export default function Page() {
         </div>
       </header>
 
-      {/* KPI strip */}
       <section className="mx-auto max-w-[1500px] px-6 pt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Kpi
-          label="Open Carts"
-          value={int(totals.count)}
-          sub={loading ? 'loading…' : `${int(totals.lines)} line items`}
-          accent="from-sky-400 to-cyan-300"
-        />
-        <Kpi
-          label="Total Open Value"
-          value={money(totals.totalValue)}
-          sub={moneyFull(totals.totalValue)}
-          accent="from-emerald-400 to-teal-300"
-        />
-        <Kpi
-          label="Average Cart"
-          value={money(totals.avg)}
-          sub="per active cart"
-          accent="from-fuchsia-400 to-violet-300"
-        />
-        <Kpi
-          label="Units in Carts"
-          value={int(totals.totalItems)}
-          sub="qty across all carts"
-          accent="from-amber-400 to-orange-300"
-        />
+        <Kpi label="Open Carts" value={int(totals.count)} sub={loading ? 'loading…' : `${int(totals.lines)} line items`} accent="from-[#72BC44] to-[#a8e07a]" />
+        <Kpi label="Total Open Value" value={money(totals.totalValue)} sub={moneyFull(totals.totalValue)} accent="from-[#72BC44] to-[#dff7c8]" primary />
+        <Kpi label="Average Cart" value={money(totals.avg)} sub="per active cart" accent="from-white/60 to-white/20" />
+        <Kpi label="Units in Carts" value={int(totals.totalItems)} sub="qty across all carts" accent="from-[#72BC44]/80 to-white/30" />
       </section>
 
-      {/* Status */}
       {err && (
         <div className="mx-auto max-w-[1500px] px-6 mt-4">
           <div className="glass rounded-2xl p-4 text-rose-300 text-sm">
@@ -224,7 +205,6 @@ export default function Page() {
         </div>
       )}
 
-      {/* Cart grid */}
       <main className="mx-auto max-w-[1500px] px-6 py-6">
         {loading && !data ? (
           <SkeletonGrid />
@@ -240,9 +220,7 @@ export default function Page() {
                 <button
                   key={c.cart_id}
                   onClick={() => setOpenId(c.cart_id)}
-                  className={`group glass ${ageColor(
-                    c.cart_age_minutes
-                  )} rounded-2xl p-5 text-left transition-transform hover:-translate-y-0.5 hover:bg-white/[0.07] relative overflow-hidden`}
+                  className={`group glass ${ageColor(c.cart_age_minutes)} rounded-2xl p-5 text-left transition-transform hover:-translate-y-0.5 hover:bg-white/[0.07] relative overflow-hidden`}
                 >
                   <div className="absolute inset-x-0 top-0 h-px shine" />
                   <div className="flex items-start justify-between gap-2">
@@ -250,37 +228,29 @@ export default function Page() {
                       <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">
                         {c.client_license ? `Lic ${c.client_license}` : 'Cart'}
                       </div>
-                      <div className="mt-1 font-semibold text-base truncate">
+                      <div className="mt-1 font-display font-semibold text-base truncate">
                         {c.client_name}
                       </div>
                       <div className="mt-0.5 text-xs text-white/50 truncate">
                         {c.inventory_allocation_name ?? '—'}
                       </div>
                     </div>
-                    <span
-                      className={`shrink-0 text-[10px] font-semibold tracking-wider px-2 py-1 rounded-full ring-1 ${badge.cls}`}
-                    >
+                    <span className={`shrink-0 text-[10px] font-semibold tracking-wider px-2 py-1 rounded-full ring-1 ${badge.cls}`}>
                       {badge.label}
                     </span>
                   </div>
 
                   <div className="mt-5 flex items-end justify-between">
                     <div>
-                      <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">
-                        Cart value
-                      </div>
-                      <div className="text-3xl font-black tracking-tight bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent">
+                      <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Cart value</div>
+                      <div className="text-3xl font-display font-extrabold tracking-tight bg-gradient-to-br from-white via-white to-[#a8e07a] bg-clip-text text-transparent">
                         {moneyFull(c.cart_total)}
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">
-                        Items
-                      </div>
+                      <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Items</div>
                       <div className="text-xl font-bold">{int(c.item_count)}</div>
-                      <div className="text-[11px] text-white/40">
-                        {c.items?.length ?? 0} SKUs
-                      </div>
+                      <div className="text-[11px] text-white/40">{c.items?.length ?? 0} SKUs</div>
                     </div>
                   </div>
 
@@ -289,7 +259,7 @@ export default function Page() {
                     <span>Updated {relTime(c.cart_minutes_since_last_update)} ago</span>
                   </div>
 
-                  <div className="mt-4 text-[11px] text-white/30 group-hover:text-white/60 transition">
+                  <div className="mt-4 text-[11px] text-white/30 group-hover:text-[#a8e07a] transition">
                     Click to view items →
                   </div>
                 </button>
@@ -299,34 +269,29 @@ export default function Page() {
         )}
       </main>
 
-      {/* Modal */}
-      {openCart && (
-        <CartModal cart={openCart} onClose={() => setOpenId(null)} />
-      )}
+      {openCart && <CartModal cart={openCart} onClose={() => setOpenId(null)} />}
 
-      <footer className="mx-auto max-w-[1500px] px-6 py-10 text-center text-xs text-white/30">
-        Polling every {REFRESH_MS / 1000}s · Source: Bamboo Intelligence
+      <footer className="mx-auto max-w-[1500px] px-6 py-10 flex flex-col items-center gap-2 text-xs text-white/30">
+        <span>Polling every {REFRESH_MS / 1000}s · Source: Bamboo Intelligence</span>
+        <span className="flex items-center gap-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#72BC44]" />
+          Phat Panda · Premium cannabis since 2014 · Spokane Valley, WA
+        </span>
       </footer>
     </div>
   );
 }
 
 function Kpi({
-  label,
-  value,
-  sub,
-  accent,
-}: {
-  label: string;
-  value: string;
-  sub?: string;
-  accent: string;
-}) {
+  label, value, sub, accent, primary = false,
+}: { label: string; value: string; sub?: string; accent: string; primary?: boolean }) {
   return (
     <div className="glass rounded-2xl p-5 relative overflow-hidden">
-      <div className={`absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br ${accent} opacity-20 blur-2xl`} />
+      <div className={`absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br ${accent} opacity-25 blur-2xl`} />
       <div className="text-[11px] uppercase tracking-[0.2em] text-white/50">{label}</div>
-      <div className="mt-2 text-3xl font-black tracking-tight">{value}</div>
+      <div className={`mt-2 text-3xl font-display font-extrabold tracking-tight ${primary ? 'bg-gradient-to-br from-[#72BC44] to-white bg-clip-text text-transparent' : ''}`}>
+        {value}
+      </div>
       {sub && <div className="mt-1 text-xs text-white/40">{sub}</div>}
     </div>
   );
@@ -347,55 +312,33 @@ function SkeletonGrid() {
 }
 
 function CartModal({ cart, onClose }: { cart: Cart; onClose: () => void }) {
-  const sortedItems = [...(cart.items ?? [])].sort(
-    (a, b) => (b.line_total ?? 0) - (a.line_total ?? 0)
-  );
+  const sortedItems = [...(cart.items ?? [])].sort((a, b) => (b.line_total ?? 0) - (a.line_total ?? 0));
   const byBrand = sortedItems.reduce<Record<string, number>>((acc, it) => {
     const k = it.brand_name || 'Unknown';
     acc[k] = (acc[k] ?? 0) + (it.line_total ?? 0);
     return acc;
   }, {});
-  const topBrands = Object.entries(byBrand)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 4);
+  const topBrands = Object.entries(byBrand).sort((a, b) => b[1] - a[1]).slice(0, 4);
 
   return (
-    <div
-      className="fixed inset-0 z-50 grid place-items-center bg-black/70 backdrop-blur-sm p-4"
-      onClick={onClose}
-    >
-      <div
-        className="glass rounded-3xl w-full max-w-4xl max-h-[88vh] overflow-hidden flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 backdrop-blur-sm p-4" onClick={onClose}>
+      <div className="glass rounded-3xl w-full max-w-4xl max-h-[88vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
         <div className="p-6 border-b border-white/10 flex items-start gap-4">
           <div>
             <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">
               {cart.client_license ? `License ${cart.client_license}` : 'Cart'}
             </div>
-            <div className="text-2xl font-bold mt-1">{cart.client_name}</div>
-            <div className="text-sm text-white/50 mt-1">
-              {cart.inventory_allocation_name ?? '—'}
-            </div>
+            <div className="text-2xl font-display font-bold mt-1">{cart.client_name}</div>
+            <div className="text-sm text-white/50 mt-1">{cart.inventory_allocation_name ?? '—'}</div>
           </div>
           <div className="ml-auto text-right">
-            <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">
-              Cart value
-            </div>
-            <div className="text-3xl font-black bg-gradient-to-br from-emerald-300 to-sky-300 bg-clip-text text-transparent">
+            <div className="text-[11px] uppercase tracking-[0.18em] text-white/40">Cart value</div>
+            <div className="text-3xl font-display font-extrabold bg-gradient-to-br from-[#72BC44] via-[#a8e07a] to-white bg-clip-text text-transparent">
               {moneyFull(cart.cart_total)}
             </div>
-            <div className="text-xs text-white/40 mt-1">
-              {int(cart.item_count)} units · {sortedItems.length} SKUs
-            </div>
+            <div className="text-xs text-white/40 mt-1">{int(cart.item_count)} units · {sortedItems.length} SKUs</div>
           </div>
-          <button
-            onClick={onClose}
-            className="ml-2 rounded-full h-9 w-9 grid place-items-center bg-white/5 border border-white/10 hover:bg-white/10"
-            aria-label="Close"
-          >
-            ✕
-          </button>
+          <button onClick={onClose} className="ml-2 rounded-full h-9 w-9 grid place-items-center bg-white/5 border border-white/10 hover:bg-white/10" aria-label="Close">✕</button>
         </div>
 
         <div className="px-6 py-4 border-b border-white/10 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
@@ -408,12 +351,9 @@ function CartModal({ cart, onClose }: { cart: Cart; onClose: () => void }) {
         {topBrands.length > 0 && (
           <div className="px-6 py-3 border-b border-white/10 flex flex-wrap gap-2">
             {topBrands.map(([b, v]) => (
-              <span
-                key={b}
-                className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10"
-              >
-                <span className="text-white/60">{b}</span>{' '}
-                <span className="font-semibold ml-1">{money(v)}</span>
+              <span key={b} className="text-xs px-3 py-1.5 rounded-full bg-[#72BC44]/10 border border-[#72BC44]/30">
+                <span className="text-white/70">{b}</span>{' '}
+                <span className="font-semibold ml-1 text-[#a8e07a]">{money(v)}</span>
               </span>
             ))}
           </div>
@@ -432,15 +372,10 @@ function CartModal({ cart, onClose }: { cart: Cart; onClose: () => void }) {
             </thead>
             <tbody>
               {sortedItems.map((it, idx) => (
-                <tr
-                  key={idx}
-                  className="border-t border-white/5 hover:bg-white/[0.03]"
-                >
+                <tr key={idx} className="border-t border-white/5 hover:bg-white/[0.03]">
                   <td className="px-6 py-3">
                     <div className="font-medium">{it.product_name ?? '—'}</div>
-                    <div className="text-[11px] text-white/40">
-                      {it.category_name ?? ''}
-                    </div>
+                    <div className="text-[11px] text-white/40">{it.category_name ?? ''}</div>
                   </td>
                   <td className="px-2 py-3 text-white/70">{it.brand_name ?? '—'}</td>
                   <td className="px-2 py-3 text-right tabular-nums">
